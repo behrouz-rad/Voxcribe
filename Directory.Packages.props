@@ -1,0 +1,36 @@
+﻿<Project>
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="10.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageVersion Include="Whisper.net" Version="1.9.0" />
+    <PackageVersion Include="Whisper.net.AllRuntimes" Version="1.9.0" />
+    <PackageVersion Include="Xabe.FFmpeg" Version="6.0.2" />
+    <PackageVersion Include="Xabe.FFmpeg.Downloader" Version="6.0.2" />
+    <PackageVersion Include="NAudio" Version="2.2.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageVersion Include="Avalonia" Version="11.3.11" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.3.11" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.11" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.11" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.11" />
+    <PackageVersion Include="MessageBox.Avalonia" Version="3.3.1.1" />
+    <PackageVersion Include="ReactiveUI.Avalonia" Version="11.3.8" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageVersion Include="Meziantou.Analyzer" Version="2.0.298" />
+    <PackageVersion Include="AsyncFixer" Version="2.1.0" />
+    <PackageVersion Include="Asyncify" Version="0.9.7" />
+    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.19.0.132793" />
+    <PackageVersion Include="Roslynator.Analyzers" Version="4.15.0" />
+    <PackageVersion Include="Roslynator.CodeAnalysis.Analyzers" Version="4.15.0" />
+    <PackageVersion Include="Roslynator.Formatting.Analyzers" Version="4.15.0" />
+    <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.14.15" />
+  </ItemGroup>
+</Project>

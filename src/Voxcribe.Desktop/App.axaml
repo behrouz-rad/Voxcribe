@@ -1,0 +1,25 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="using:Voxcribe.Desktop.Converters"
+             x:Class="Voxcribe.Desktop.App"
+             RequestedThemeVariant="Default">
+    
+    <Application.Resources>
+        <converters:BoolToColorConverter x:Key="RecordingColorConverter" 
+                                        TrueBrush="#F44336" 
+                                        FalseBrush="#9E9E9E"/>
+        <converters:StringNotEmptyConverter x:Key="StringNotEmptyConverter"/>
+    </Application.Resources>
+    
+    <Application.Styles>
+        <FluentTheme />
+        
+        <Style Selector="Button.accent">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="Button.accent:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#1976D2"/>
+        </Style>
+    </Application.Styles>
+</Application>

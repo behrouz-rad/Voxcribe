@@ -1,0 +1,57 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Voxcribe.Desktop.ViewModels"
+        xmlns:views="using:Voxcribe.Desktop.Views"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
+        x:Class="Voxcribe.Desktop.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/voxcribe.ico"
+        Title="Voxcribe - Offline Audio Transcription"
+        Width="1000" Height="700"
+        MinWidth="800" MinHeight="600"
+        WindowStartupLocation="CenterScreen">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="*,Auto">
+        <!-- Main content -->
+        <TabControl Grid.Row="0">
+            <TabItem Header="Transcribe File">
+                <views:TranscriptionView DataContext="{Binding TranscriptionPage}" />
+            </TabItem>
+            
+            <TabItem Header="Record Audio">
+                <views:RecordingView DataContext="{Binding RecordingPage}" />
+            </TabItem>
+            
+            <TabItem Header="Manage Models">
+                <views:ModelManagementView DataContext="{Binding ModelsPage}" />
+            </TabItem>
+        </TabControl>
+
+        <!-- Initialization status bar -->
+        <Border Grid.Row="1" 
+                Background="#F0F0F0" 
+                BorderBrush="#CCCCCC" 
+                BorderThickness="0,1,0,0"
+                Padding="12,8"
+                IsVisible="{Binding IsInitializing}">
+            <Grid ColumnDefinitions="Auto,*">
+                <ProgressBar Grid.Column="0"
+                             Width="100"
+                             Height="16"
+                             IsIndeterminate="True"
+                             Margin="0,0,12,0" />
+                <TextBlock Grid.Column="1"
+                           Text="{Binding InitializationStatus}"
+                           VerticalAlignment="Center"
+                           FontSize="13" />
+            </Grid>
+        </Border>
+    </Grid>
+
+</Window>

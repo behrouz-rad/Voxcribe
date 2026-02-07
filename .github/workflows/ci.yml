@@ -1,0 +1,72 @@
+﻿name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (e.g., v1.0.0)"
+        required: true
+        type: string
+
+jobs:
+  init:
+    runs-on: windows-2025
+    steps:
+      - run: echo "Set global variables"
+    outputs:
+      dotnet-version: 10.0.x
+      solution: Voxcribe.sln
+      app-project: src/Voxcribe.Desktop/Voxcribe.Desktop.csproj
+
+  release:
+    if: github.event_name == 'workflow_dispatch'
+    needs: [init]
+    permissions:
+      contents: write # permission to allow creation of a release
+
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ needs.init.outputs.dotnet-version }}
+
+      - name: Extract version number
+        id: version
+        run: |
+          ver="${{ github.event.inputs.version }}"
+          if [[ "$ver" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "number=${ver#v}" >> $GITHUB_OUTPUT
+          else
+            echo "Input must start with 'v' followed by semver like v1.2.3" >&2
+            exit 1
+          fi
+
+      - name: Publish Windows
+        run: dotnet publish ${{ needs.init.outputs.app-project }} --configuration Release --runtime win-x64 --self-contained true --output ./publish/win-x64 -p:Version=${{ steps.version.outputs.number }}
+
+      - name: Publish Linux
+        run: dotnet publish ${{ needs.init.outputs.app-project }} --configuration Release --runtime linux-x64 --self-contained true --output ./publish/linux-x64 -p:Version=${{ steps.version.outputs.number }}
+
+      - name: Create archives
+        run: |
+          cd publish/win-x64
+          zip -r ../../voxcribe-${{ github.event.inputs.version }}-win-x64.zip .
+          cd ../linux-x64
+          tar -czf ../../voxcribe-${{ github.event.inputs.version }}-linux-x64.tar.gz .
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ github.event.inputs.version }}
+          name: Release ${{ github.event.inputs.version }}
+          artifacts: |
+            voxcribe-${{ github.event.inputs.version }}-win-x64.zip
+            voxcribe-${{ github.event.inputs.version }}-linux-x64.tar.gz
+          token: ${{ secrets.GITHUB_TOKEN }}

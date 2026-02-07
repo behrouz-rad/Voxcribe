@@ -1,0 +1,123 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Voxcribe.Desktop.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="Voxcribe.Desktop.Views.ModelManagementView"
+             x:DataType="vm:ModelManagementViewModel">
+
+    <Grid Margin="20" RowDefinitions="Auto,*">
+        
+        <!-- Header -->
+        <Border Grid.Row="0" 
+                Padding="15"
+                CornerRadius="8"
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
+            <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Grid.Column="0" Spacing="5">
+                    <TextBlock Text="Whisper Models"
+                               FontSize="18"
+                               FontWeight="Bold"/>
+                    <TextBlock Text="Download AI models for transcription. Models are stored locally and used offline."
+                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                </StackPanel>
+                
+                <Button Grid.Column="1"
+                        Content="Refresh"
+                        Command="{Binding RefreshCommand}"
+                        Padding="20,8"
+                        VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <!-- Models List -->
+        <ScrollViewer Grid.Row="1" Margin="0,15,0,0">
+            <ItemsControl ItemsSource="{Binding Models}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="15"
+                                Margin="0,0,0,10"
+                                CornerRadius="8"
+                                Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                                BorderThickness="1">
+                            <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto">
+                                
+                                <!-- Model Info -->
+                                <StackPanel Grid.Column="0" Grid.Row="0" Spacing="5">
+                                    <TextBlock Text="{Binding DisplayName}"
+                                               FontSize="16"
+                                               FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding Description}"
+                                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                    <TextBlock Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}">
+                                        <Run Text="Size: "/>
+                                        <Run Text="{Binding Size}" FontWeight="Medium"/>
+                                    </TextBlock>
+                                </StackPanel>
+                                
+                                <!-- Status & Actions -->
+                                <StackPanel Grid.Column="1" Grid.Row="0"
+                                            Orientation="Horizontal"
+                                            Spacing="10"
+                                            VerticalAlignment="Center">
+                                    
+                                    <!-- Downloaded Badge -->
+                                    <Border Background="#4CAF50"
+                                            CornerRadius="4"
+                                            Padding="8,4"
+                                            IsVisible="{Binding IsDownloaded}">
+                                        <TextBlock Text="Downloaded"
+                                                   Foreground="White"
+                                                   FontSize="12"
+                                                   FontWeight="SemiBold" VerticalAlignment="Center" />
+                                    </Border>
+                                    
+                                    <!-- Download Button -->
+                                    <Button Content="Download"
+                                            Command="{Binding DownloadCommand}"
+                                            IsVisible="{Binding !IsDownloaded}"
+                                            Padding="20,8"
+                                            Classes="accent"/>
+                                    
+                                    <!-- Delete Button -->
+                                    <Button Content="Delete"
+                                            Command="{Binding DeleteCommand}"
+                                            IsVisible="{Binding IsDownloaded}"
+                                            Padding="20,8"/>
+                                    
+                                    <!-- Cancel Button -->
+                                    <Button Content="Cancel"
+                                            Command="{Binding CancelDownloadCommand}"
+                                            IsVisible="{Binding IsDownloading}"
+                                            Padding="20,8"/>
+                                </StackPanel>
+                                
+                                <!-- Download Progress -->
+                                <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
+                                      Margin="0,10,0,0"
+                                      IsVisible="{Binding IsDownloading}">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <ProgressBar Grid.Column="0"
+                                                     Value="{Binding DownloadProgress}"
+                                                     Height="24"
+                                                     VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding DownloadProgress, StringFormat='{}  {0:F0}%'}"
+                                                   VerticalAlignment="Center"
+                                                   Margin="10,0,0,0"
+                                                   FontWeight="Medium"/>
+                                    </Grid>
+                                </Grid>
+                                
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+    </Grid>
+
+</UserControl>

@@ -1,0 +1,157 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Voxcribe.Desktop.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="Voxcribe.Desktop.Views.TranscriptionView"
+             x:DataType="vm:TranscriptionViewModel">
+
+    <Grid Margin="20" RowDefinitions="Auto,Auto,*,Auto">
+        
+        <!-- File Selection -->
+        <Border Grid.Row="0" 
+                Padding="15"
+                CornerRadius="8"
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
+            <Grid ColumnDefinitions="*,Auto,Auto" RowDefinitions="Auto,Auto">
+                <TextBlock Grid.Row="0" Grid.Column="0"
+                           Text="Media File"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,8"/>
+                
+                <TextBox Grid.Row="1" Grid.Column="0"
+                         Text="{Binding SelectedFilePath}"
+                         IsReadOnly="True"
+                         Watermark="No file selected"
+                         Margin="0,0,10,0"/>
+                
+                <Button Grid.Row="1" Grid.Column="1"
+                        Content="Browse..."
+                        Command="{Binding SelectFileCommand}"
+                        Padding="20,8"/>
+            </Grid>
+        </Border>
+
+        <!-- Model & Actions -->
+        <Border Grid.Row="1" 
+                Margin="0,15,0,0"
+                Padding="15"
+                CornerRadius="8"
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
+            <Grid ColumnDefinitions="Auto,300,*,Auto,Auto" RowDefinitions="Auto">
+                <TextBlock Grid.Column="0"
+                           Text="Model:"
+                           VerticalAlignment="Center"
+                           Margin="0,0,10,0"
+                           FontWeight="SemiBold"/>
+                
+                <ComboBox Grid.Column="1"
+                          ItemsSource="{Binding AvailableModels}"
+                          SelectedItem="{Binding SelectedModel}"
+                          VerticalAlignment="Center">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical" 
+                                        IsEnabled="{Binding IsAvailableLocally}">
+                                <TextBlock>
+                                    <Run Text="{Binding Name}" FontWeight="SemiBold"/>
+                                    <Run Text=" - " Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                    <Run Text="{Binding FormattedSize}" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                </TextBlock>
+                                <TextBlock Text="{Binding Description}" 
+                                           FontSize="11"
+                                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                                           TextWrapping="Wrap"/>
+                                <TextBlock Text="(Not Downloaded)" 
+                                           FontSize="11"
+                                           Foreground="Orange"
+                                           FontStyle="Italic"
+                                           IsVisible="{Binding !IsAvailableLocally}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                
+                <Button Grid.Column="3"
+                        Content="Transcribe"
+                        Command="{Binding TranscribeCommand}"
+                        IsEnabled="{Binding !IsTranscribing}"
+                        Padding="30,8"
+                        Margin="10,0,10,0"
+                        Classes="accent"/>
+                
+                <Button Grid.Column="4"
+                        Content="Cancel"
+                        Command="{Binding CancelCommand}"
+                        IsVisible="{Binding IsTranscribing}"
+                        Padding="20,8"/>
+            </Grid>
+        </Border>
+
+        <!-- Transcription Output -->
+        <Border Grid.Row="2"
+                Margin="0,15,0,0"
+                Padding="15"
+                CornerRadius="8"
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
+            <Grid RowDefinitions="Auto,*,Auto">
+                <TextBlock Grid.Row="0"
+                           Text="Transcription"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,10"/>
+                
+                <ScrollViewer Grid.Row="1">
+                    <TextBox Text="{Binding TranscriptionText}"
+                             IsReadOnly="True"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             MinHeight="200"
+                             BorderThickness="0"
+                             Background="Transparent"/>
+                </ScrollViewer>
+                
+                <StackPanel Grid.Row="2" 
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            Spacing="10"
+                            Margin="0,10,0,0">
+                    <Button Content="Copy to Clipboard"
+                            Command="{Binding CopyCommand}"
+                            Padding="20,8"/>
+                    <Button Content="Export to File"
+                            Command="{Binding ExportCommand}"
+                            Padding="20,8"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Status Bar -->
+        <Border Grid.Row="3"
+                Margin="0,15,0,0"
+                Padding="15,10"
+                CornerRadius="8"
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0"
+                           Text="{Binding StatusMessage}"
+                           VerticalAlignment="Center"/>
+                
+                <StackPanel Grid.Column="1" 
+                            Orientation="Horizontal"
+                            Spacing="10"
+                            IsVisible="{Binding IsTranscribing}">
+                    <ProgressBar Value="{Binding Progress}"
+                                 Width="200"
+                                 Height="20"
+                                 VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding Progress, StringFormat='{}{0:F0}%'}"
+                               VerticalAlignment="Center"
+                               MinWidth="40"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+    </Grid>
+
+</UserControl>
