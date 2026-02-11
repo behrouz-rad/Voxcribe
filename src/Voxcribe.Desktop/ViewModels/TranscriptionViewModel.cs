@@ -4,7 +4,9 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Reactive;
 using ReactiveUI;
+using Voxcribe.Desktop.Models;
 using Voxcribe.Desktop.Services;
+using Voxcribe.Engine.Configuration;
 using Voxcribe.Engine.Contracts;
 using Voxcribe.Engine.Domain;
 
@@ -23,6 +25,7 @@ public class TranscriptionViewModel : ViewModelBase
     private double _progress;
     private string _statusMessage = "Ready";
     private ModelDescriptor? _selectedModel;
+    private LanguageOption _selectedLanguage;
     private CancellationTokenSource? _cancellationTokenSource;
 
     public TranscriptionViewModel(
@@ -35,6 +38,9 @@ public class TranscriptionViewModel : ViewModelBase
         _fileService = fileService;
         _dialogService = dialogService;
         _modelRepository = modelRepository;
+
+        AvailableLanguages = new ObservableCollection<LanguageOption>(LanguageOption.GetAllLanguages());
+        _selectedLanguage = AvailableLanguages[0]; // Auto
 
         // Commands
         var canSelectFile = this.WhenAnyValue(x => x.IsTranscribing, transcribing => !transcribing);
@@ -67,6 +73,7 @@ public class TranscriptionViewModel : ViewModelBase
     }
 
     public ObservableCollection<ModelDescriptor> AvailableModels { get; }
+    public ObservableCollection<LanguageOption> AvailableLanguages { get; }
 
     public string? SelectedFilePath
     {
@@ -102,6 +109,12 @@ public class TranscriptionViewModel : ViewModelBase
     {
         get => _selectedModel;
         set => this.RaiseAndSetIfChanged(ref _selectedModel, value);
+    }
+
+    public LanguageOption SelectedLanguage
+    {
+        get => _selectedLanguage;
+        set => this.RaiseAndSetIfChanged(ref _selectedLanguage, value);
     }
 
     public ReactiveCommand<Unit, Unit> SelectFileCommand { get; }
@@ -179,10 +192,15 @@ public class TranscriptionViewModel : ViewModelBase
 
             var startTime = DateTime.Now;
 
+            var options = new TranscriptionOptions
+            {
+                Language = SelectedLanguage.WhisperLanguageCode
+            };
+
             var result = await _orchestrator.TranscribeMediaFileAsync(
                 SelectedFilePath,
                 SelectedModel.Size,
-                null,
+                options,
                 progressReporter,
                 _cancellationTokenSource.Token);
 

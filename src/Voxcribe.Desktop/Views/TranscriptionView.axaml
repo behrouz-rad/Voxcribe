@@ -39,7 +39,7 @@
                 Padding="15"
                 CornerRadius="8"
                 Background="{DynamicResource SystemControlBackgroundAltHighBrush}">
-            <Grid ColumnDefinitions="Auto,300,*,Auto,Auto" RowDefinitions="Auto">
+            <Grid ColumnDefinitions="Auto,200,Auto,180,*,Auto,Auto" RowDefinitions="Auto">
                 <TextBlock Grid.Column="0"
                            Text="Model:"
                            VerticalAlignment="Center"
@@ -72,8 +72,25 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
+
+                <TextBlock Grid.Column="2"
+                           Text="Language:"
+                           VerticalAlignment="Center"
+                           Margin="20,0,10,0"
+                           FontWeight="SemiBold"/>
                 
-                <Button Grid.Column="3"
+                <ComboBox Grid.Column="3"
+                          ItemsSource="{Binding AvailableLanguages}"
+                          SelectedItem="{Binding SelectedLanguage}"
+                          VerticalAlignment="Center">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DisplayName}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                
+                <Button Grid.Column="5"
                         Content="Transcribe"
                         Command="{Binding TranscribeCommand}"
                         IsEnabled="{Binding !IsTranscribing}"
@@ -81,7 +98,7 @@
                         Margin="10,0,10,0"
                         Classes="accent"/>
                 
-                <Button Grid.Column="4"
+                <Button Grid.Column="6"
                         Content="Cancel"
                         Command="{Binding CancelCommand}"
                         IsVisible="{Binding IsTranscribing}"

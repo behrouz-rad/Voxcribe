@@ -1,0 +1,98 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Voxcribe.Desktop.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="Voxcribe.Desktop.Views.AboutView"
+             x:DataType="vm:AboutViewModel">
+
+    <Grid Margin="40" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Border Padding="50"
+                CornerRadius="16"
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                MaxWidth="600"
+                BoxShadow="0 4 20 0 #20000000">
+            <StackPanel Spacing="20" HorizontalAlignment="Center">
+
+                <!-- App Icon -->
+                <Image Source="/Assets/Logo.png"
+                       Width="100"
+                       Height="100"
+                       Stretch="Uniform"
+                       ClipToBounds="True">
+                    <Image.Clip>
+                        <RectangleGeometry Rect="12,13,76,74" RadiusX="20" RadiusY="20"/>
+                    </Image.Clip>
+                </Image>
+
+                <!-- App Name -->
+                <TextBlock Text="{Binding AppName}"
+                           FontSize="36"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+
+                <!-- Version -->
+                <TextBlock Text="{Binding Version}"
+                           FontSize="14"
+                           HorizontalAlignment="Center"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+
+                <!-- Divider -->
+                <Border Height="1"
+                        Background="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                        Margin="0,10"/>
+
+                <!-- Description -->
+                <TextBlock Text="{Binding Description}"
+                           FontSize="14"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           LineHeight="22"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumHighBrush}"
+                           MaxWidth="500"/>
+
+                <!-- Divider -->
+                <Border Height="1"
+                        Background="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                        Margin="0,10"/>
+
+                <!-- Author -->
+                <StackPanel Spacing="5" HorizontalAlignment="Center">
+                    <TextBlock Text="Created by"
+                               FontSize="12"
+                               HorizontalAlignment="Center"
+                               Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                    <TextBlock Text="{Binding Author}"
+                               FontSize="16"
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Center"
+                               Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                </StackPanel>
+
+                <!-- GitHub Button -->
+                <Button Command="{Binding OpenGitHubCommand}"
+                        HorizontalAlignment="Center"
+                        Padding="25,12"
+                        Margin="0,10,0,0"
+                        Classes="accent">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Text="View on GitHub"
+                                   FontSize="14"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- Copyright -->
+                <TextBlock Text="{Binding Copyright}"
+                           FontSize="11"
+                           HorizontalAlignment="Center"
+                           Foreground="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                           Margin="0,15,0,0"/>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+
+</UserControl>

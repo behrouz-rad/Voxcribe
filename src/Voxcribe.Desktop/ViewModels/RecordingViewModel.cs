@@ -4,7 +4,9 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Reactive;
 using ReactiveUI;
+using Voxcribe.Desktop.Models;
 using Voxcribe.Desktop.Services;
+using Voxcribe.Engine.Configuration;
 using Voxcribe.Engine.Contracts;
 using Voxcribe.Engine.Domain;
 
@@ -26,6 +28,7 @@ public class RecordingViewModel : ViewModelBase
     private double _progress;
     private string _statusMessage = "Ready to record";
     private ModelDescriptor? _selectedModel;
+    private LanguageOption _selectedLanguage;
     private CancellationTokenSource? _cancellationTokenSource;
 
     public RecordingViewModel(
@@ -42,6 +45,9 @@ public class RecordingViewModel : ViewModelBase
         _modelRepository = modelRepository;
 
         AvailableModels = new ObservableCollection<ModelDescriptor>();
+
+        AvailableLanguages = new ObservableCollection<LanguageOption>(LanguageOption.GetAllLanguages());
+        _selectedLanguage = AvailableLanguages[0]; // Auto
 
         // Subscribe to recording progress
         _recordingService.RecordingProgressChanged += (_, duration) =>
@@ -80,6 +86,7 @@ public class RecordingViewModel : ViewModelBase
     }
 
     public ObservableCollection<ModelDescriptor> AvailableModels { get; }
+    public ObservableCollection<LanguageOption> AvailableLanguages { get; }
 
     public bool IsRecording
     {
@@ -127,6 +134,12 @@ public class RecordingViewModel : ViewModelBase
     {
         get => _selectedModel;
         set => this.RaiseAndSetIfChanged(ref _selectedModel, value);
+    }
+
+    public LanguageOption SelectedLanguage
+    {
+        get => _selectedLanguage;
+        set => this.RaiseAndSetIfChanged(ref _selectedLanguage, value);
     }
 
     public ReactiveCommand<Unit, Unit> StartRecordingCommand { get; }
@@ -231,11 +244,17 @@ public class RecordingViewModel : ViewModelBase
                 StatusMessage = p.CurrentPhase;
             });
 
+            var options = new TranscriptionOptions
+            {
+                Language = SelectedLanguage.WhisperLanguageCode
+            };
+
             var result = await _orchestrator.TranscribeMediaFileAsync(
                 RecordedFilePath,
                 SelectedModel.Size,
-                progress: progressReporter,
-                cancellationToken: _cancellationTokenSource.Token);
+                options,
+                progressReporter,
+                _cancellationTokenSource.Token);
 
             TranscriptionText = result.FullText;
             StatusMessage = "Transcription complete";

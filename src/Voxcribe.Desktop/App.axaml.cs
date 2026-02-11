@@ -53,5 +53,6 @@ public partial class App : Application
         services.AddTransient<TranscriptionViewModel>();
         services.AddTransient<ModelManagementViewModel>();
         services.AddTransient<RecordingViewModel>();
+        services.AddTransient<AboutViewModel>();
     }
 }

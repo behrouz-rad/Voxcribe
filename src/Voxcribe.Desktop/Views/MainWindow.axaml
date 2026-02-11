@@ -31,6 +31,10 @@
             <TabItem Header="Manage Models">
                 <views:ModelManagementView DataContext="{Binding ModelsPage}" />
             </TabItem>
+
+            <TabItem Header="About">
+                <views:AboutView DataContext="{Binding AboutPage}" />
+            </TabItem>
         </TabControl>
 
         <!-- Initialization status bar -->

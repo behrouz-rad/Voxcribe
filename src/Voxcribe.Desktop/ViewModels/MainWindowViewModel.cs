@@ -20,13 +20,15 @@ public class MainWindowViewModel : ViewModelBase
         IDialogService dialogService,
         TranscriptionViewModel transcriptionViewModel,
         ModelManagementViewModel modelManagementViewModel,
-        RecordingViewModel recordingViewModel)
+        RecordingViewModel recordingViewModel,
+        AboutViewModel aboutViewModel)
     {
         _dialogService = dialogService;
 
         TranscriptionPage = transcriptionViewModel;
         RecordingPage = recordingViewModel;
         ModelsPage = modelManagementViewModel;
+        AboutPage = aboutViewModel;
 
         _currentPage = TranscriptionPage;
 
@@ -37,6 +39,7 @@ public class MainWindowViewModel : ViewModelBase
     public TranscriptionViewModel TranscriptionPage { get; }
     public RecordingViewModel RecordingPage { get; }
     public ModelManagementViewModel ModelsPage { get; }
+    public AboutViewModel AboutPage { get; }
 
     public ViewModelBase CurrentPage
     {
