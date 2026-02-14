@@ -27,10 +27,10 @@ Voxcribe is a privacy-focused desktop application that transcribes audio and vid
 ## 📸 Screenshots
 
 ### File Transcription
-<img width="1822" height="1417" alt="t_form" src="https://github.com/user-attachments/assets/ee91fd23-904c-42e4-9e70-8b2a46f74ef2" />
+<img width="1818" height="1417" alt="t_form" src="https://github.com/user-attachments/assets/dfeaf1bb-6539-4f33-b66c-b3bde14510ad" />
 
 ### Microphone Recording
-<img width="1838" height="1491" alt="r_form" src="https://github.com/user-attachments/assets/c8464eee-62b1-486a-ba2b-eca51a6133ac" />
+<img width="1903" height="1491" alt="r_form" src="https://github.com/user-attachments/assets/b6df64fb-d14e-42f4-87bb-d4ab46fa8524" />
 
 ### Model Management
 <img width="1804" height="1674" alt="m_form" src="https://github.com/user-attachments/assets/b5311ffb-df34-443a-b65a-dcf00a1e41cc" />
